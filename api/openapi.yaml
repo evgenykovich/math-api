@@ -1,0 +1,91 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: you@your-company.com
+  description: This is a simple API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Simple Inventory API
+  version: 1.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: http://localhost:8080
+tags:
+  - description: Create an Auth Token
+    name: Authentication
+  - description: Do Math
+    name: Math
+paths:
+  /login:
+    post:
+      description: |
+        generate a jwt token
+      operationId: login
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authenticateToken'
+          description: token created
+        '400':
+          description: bad input parameter
+      summary: get auth token
+      tags:
+        - Authentication
+      x-eov-operation-handler: controllers/AuthenticationController
+  /math:
+    post:
+      description: Send 2 numbers and an action
+      operationId: doMath
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MathRequest'
+        description: Math request
+      responses:
+        '201':
+          description: Math result
+        '400':
+          description: Invalid input
+        '401':
+          description: Access token is missing or invalid
+      security:
+        - jwt_auth: []
+      summary: Solve a math equation based on passed in parameters
+      tags:
+        - Math
+      x-eov-operation-handler: controllers/MathController
+components:
+  schemas:
+    authenticateToken:
+      type: string
+    MathRequest:
+      example:
+        num1: 0.8008281904610115
+        action: add
+        num2: 6.027456183070403
+      properties:
+        num1:
+          description: First number
+          type: number
+        num2:
+          description: Second number
+          type: number
+        action:
+          description: Math operation action
+          enum:
+            - add
+            - subtract
+            - multiply
+            - divide
+          type: string
+      type: object
+  securitySchemes:
+    jwt_auth:
+      description: Enter JWT token in the format 'Bearer {token}'
+      in: header
+      name: Authorization
+      type: apiKey

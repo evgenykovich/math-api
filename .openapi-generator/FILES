@@ -1,0 +1,17 @@
+.eslintrc.json
+.openapi-generator-ignore
+README.md
+api/openapi.yaml
+config.js
+controllers/AuthenticationController.js
+controllers/MathController.js
+controllers/index.js
+expressServer.js
+index.js
+logger.js
+package.json
+services/AuthenticationService.js
+services/MathService.js
+services/Service.js
+services/index.js
+utils/openapiRouter.js
